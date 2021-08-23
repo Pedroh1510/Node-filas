@@ -1,0 +1,29 @@
+version: '3'
+services:
+  artemis:
+    image: local/artemis
+    ports:
+      - 61616:61616
+      - 5672:5672
+      - 8161:8161
+    environment:
+      - ARTEMIS_USER=user
+      - ARTEMIS_PASSWORD=pass
+      - ANONYMOUS_LOGIN=true
+
+  activemq:
+    image: webcenter/activemq
+    ports:
+      - 61617:61616
+      - 5673:5672
+      - 8162:8161
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=user
+      - ACTIVEMQ_ADMIN_PASSWORD=pass
+      - ANONYMOUS_LOGIN=true
+
+  rabbitmq:
+    image: rabbitmq:3.9.4-management-alpine
+    ports:
+      - 15672:15672
+      - 5674:5672
