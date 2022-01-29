@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   artemis:
     image: local/artemis
@@ -7,6 +7,11 @@ services:
       - 61616:61616
       - 5672:5672
       - 8161:8161
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 400M
     # environment:
     #   - ARTEMIS_USER=user
     #   - ARTEMIS_PASSWORD=pass
@@ -21,13 +26,24 @@ services:
       - 61617:61616
       - 5673:5672
       - 8080:8161
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 400M
     # environment:
     #   - ACTIVEMQ_ADMIN_LOGIN=user
     #   - ACTIVEMQ_ADMIN_PASSWORD=pass
     #   - ANONYMOUS_LOGIN=true
 
-  # rabbitmq:
-  #   image: rabbitmq:3.9.4-management-alpine
-  #   ports:
-  #     - 15672:15672
-  #     - 5674:5672
+  rabbitmq:
+    image: rabbitmq:3.9.13-management-alpine
+    container_name: rabbitmq
+    ports:
+      - 15672:15672
+      - 5674:5672
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 400M

@@ -17,7 +17,7 @@
 
 # ActiveMQ Artemis
 
-FROM openjdk:8
+FROM openjdk:11-jre-slim-buster
 LABEL maintainer="Apache ActiveMQ Team"
 # Make sure pipes are considered to determine success, see: https://github.com/hadolint/hadolint/wiki/DL4006
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -30,7 +30,7 @@ ENV EXTRA_ARGS --http-host 0.0.0.0 --relax-jolokia
 
 # add user and group for artemis
 RUN groupadd -g 1000 -r artemis && useradd -r -u 1000 -g artemis artemis \
- && apt-get -qq -o=Dpkg::Use-Pty=0 update && \
+    && apt-get -qq -o=Dpkg::Use-Pty=0 update && \
     apt-get -qq -o=Dpkg::Use-Pty=0 install -y libaio1 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -40,17 +40,17 @@ ADD . /opt/activemq-artemis
 
 # Web Server
 EXPOSE 8161 \
-# JMX Exporter
+    # JMX Exporter
     9404 \
-# Port for CORE,MQTT,AMQP,HORNETQ,STOMP,OPENWIRE
+    # Port for CORE,MQTT,AMQP,HORNETQ,STOMP,OPENWIRE
     61616 \
-# Port for HORNETQ,STOMP
+    # Port for HORNETQ,STOMP
     5445 \
-# Port for AMQP
+    # Port for AMQP
     5672 \
-# Port for MQTT
+    # Port for MQTT
     1883 \
-#Port for STOMP
+    #Port for STOMP
     61613
 
 USER root
