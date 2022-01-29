@@ -9,12 +9,13 @@ import {
 } from 'rhea-promise';
 
 import { config } from './config/env';
+import { queues } from './utils/contants';
 
 const connection = rhea.connect({
 	host: config.host,
 	username: config.user,
 	password: config.pass,
-	port: parseInt(config.port),
+	port: config.port,
 	container_id: process.env.name + 1 || 'teste1'
 });
 
@@ -48,22 +49,37 @@ const connectionOptions: ConnectionOptions = {
 	hostname: config.host,
 	username: config.user,
 	password: config.pass,
-	port: parseInt(config.port),
+	port: config.port,
 	channel_max: 1000
 	// reconnect: true
 };
 
 const connection2: Connection = new Connection(connectionOptions);
-connection2.open();
-export async function sendMessagePromise(queue, message) {
-	const sender: AwaitableSender = await connection2.createAwaitableSender({
-		name: process.env.name || 'teste',
+const createSender = async (queue) => {
+	await connection2.open();
+	return await connection2.createAwaitableSender({
+		name: (process.env.name || 'teste') + queue,
 		target: {
-			address: `${queue}`,
-			timeout: 10
+			address: queue
 		}
-		// snd_settle_mode: 1
 	});
+};
+let senders: AwaitableSender[] = [];
+const createSenders = async () => {
+	for (const key in queues) {
+		senders.push(await createSender(queues[key]));
+	}
+};
+createSenders();
+export async function sendMessagePromise(queue, message) {
+	let sender: AwaitableSender = null;
+	for (const item of senders) {
+		if (item.target.address === queue) {
+			sender = item;
+			break;
+		}
+	}
+	if (sender === null) throw new Error('Sem conexão');
 	const msg: Message = {
 		body: message,
 		message_id: Math.random() * 1000,
@@ -71,9 +87,5 @@ export async function sendMessagePromise(queue, message) {
 	};
 
 	const a = await sender.send(msg);
-	await sender.close();
-
-	console.log(a.settled);
-
 	return a.settled;
 }

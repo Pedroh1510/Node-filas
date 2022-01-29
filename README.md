@@ -36,3 +36,12 @@ yarn server
 # consumidor
 yarn consumer
 ```
+
+## Testes de benchmark
+
+```bash
+  npx autocannon -c 100 -d 10 localhost:3333/rabbit --renderStatusCodes
+  npx autocannon -c 100 -d 10 localhost:3333/activemq --renderStatusCodes
+  npx autocannon -c 100 -d 10 localhost:3333/artemis --renderStatusCodes
+  npx autocannon -c 100 -d 10 localhost:3333/redis --renderStatusCodes
+```

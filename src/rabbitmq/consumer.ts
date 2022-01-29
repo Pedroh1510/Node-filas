@@ -7,7 +7,7 @@ const config: Options.Connect = {
 	hostname: configEnv.host,
 	username: configEnv.user,
 	password: configEnv.pass,
-	port: parseInt(configEnv.port)
+	port: configEnv.port
 };
 
 export function consumer(props: consumerProps) {

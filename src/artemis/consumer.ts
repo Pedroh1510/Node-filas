@@ -8,7 +8,7 @@ export function consumer(props: consumerProps) {
 		host: config.host,
 		username: config.user,
 		password: config.pass,
-		port: parseInt(config.port),
+		port: config.port,
 		receiver_options: { credit_window: 0, autoaccept: false },
 		reconnect: true,
 		idle_time_out: 5000
