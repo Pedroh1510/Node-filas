@@ -1,6 +1,7 @@
 import amqpP, { Options } from 'amqplib';
 
 import { config as configEnv } from './config/env';
+import { queues } from './utils/contants';
 
 const config: Options.Connect = {
 	hostname: configEnv.host,
@@ -11,14 +12,27 @@ const config: Options.Connect = {
 
 const connection = amqpP.connect(config);
 
-export async function sendMessage(queue, msg) {
+const createChannel = async (queue?: string) => {
 	return connection
 		.then((conn) => conn.createChannel())
-		.then((ch) =>
-			ch
-				.assertQueue(queue, {
+		.then((ch) => {
+			if (queue) {
+				ch.assertQueue(queue, {
 					durable: true
-				})
-				.then(() => ch.sendToQueue(queue, Buffer.from(msg)))
-		);
+				});
+			}
+			return ch;
+		});
+};
+
+let channel: amqpP.Channel;
+const createChannels = async () => {
+	channel = await createChannel();
+	channel.assertExchange('test', 'direct', { durable: true });
+	channel.assertQueue('myQueue', { durable: true });
+	channel.bindQueue('myQueue', 'test', '');
+};
+createChannels();
+export async function sendMessage(queue, msg) {
+	return await channel.publish(queue, '', Buffer.from(msg));
 }

@@ -39,7 +39,7 @@ app.get('/activemq', async (req, res) => {
 
 app.get('/rabbit', async (req, res) => {
 	try {
-		if (await rabbitmq('myQueue', 'Rabbit')) {
+		if (await rabbitmq('test', 'Rabbit')) {
 			return res.send('ok');
 		}
 	} catch (error) {}
