@@ -6,7 +6,7 @@ const connection = rhea.connect({
 	host: config.host,
 	username: config.user,
 	password: config.pass,
-	port: config.port,
+	port: parseInt(config.port),
 	container_id: 'prod'
 });
 

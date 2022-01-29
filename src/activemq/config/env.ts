@@ -1,6 +1,6 @@
 export const config: envDTO = {
-	host: 'localhost',
-	user: 'user',
-	pass: 'pass',
-	port: 5673
+	host: process.env.active_host,
+	user: process.env.active_user,
+	pass: process.env.active_pass,
+	port: process.env.active_port
 };

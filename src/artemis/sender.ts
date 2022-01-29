@@ -1,10 +1,12 @@
 import rhea from 'rhea';
 
+import { config } from './config/env';
+
 const connection = rhea.connect({
-	host: 'localhost',
-	username: 'artemis',
-	password: 'artemis',
-	port: 5672,
+	host: config.host,
+	username: config.user,
+	password: config.pass,
+	port: parseInt(config.port),
 	container_id: 'prod'
 });
 

@@ -1,10 +1,12 @@
 import amqpP, { Options } from 'amqplib';
 
+import { config as configEnv } from './config/env';
+
 const config: Options.Connect = {
-	hostname: 'localhost',
-	username: 'guest',
-	password: 'guest',
-	port: 5674
+	hostname: configEnv.host,
+	username: configEnv.user,
+	password: configEnv.pass,
+	port: parseInt(configEnv.port)
 };
 
 const connection = amqpP.connect(config);

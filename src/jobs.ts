@@ -1,5 +1,7 @@
-import { consumer as artemis } from './artemis/consumer';
+require('dotenv').config();
+
 import { consumer as activemq } from './activemq/consumer';
+import { consumer as artemis } from './artemis/consumer';
 import { consumer as rabbitmq } from './rabbitmq/consumer';
 import { exampleWorker } from './utils';
 

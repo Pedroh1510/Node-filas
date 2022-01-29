@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import express from 'express';
 
 import { sendMessage as activemq } from './activemq/sender';

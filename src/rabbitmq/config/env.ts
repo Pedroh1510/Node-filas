@@ -1,6 +1,6 @@
 export const config: envDTO = {
-	host: 'localhost',
-	user: 'guest',
-	pass: 'guest',
-	port: 5674
+	host: process.env.rabbit_host,
+	user: process.env.rabbit_user,
+	pass: process.env.rabbit_pass,
+	port: process.env.rabbit_port
 };

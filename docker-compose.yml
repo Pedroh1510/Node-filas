@@ -42,8 +42,71 @@ services:
     ports:
       - 15672:15672
       - 5674:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     deploy:
       resources:
         limits:
           cpus: '0.5'
           memory: 400M
+
+  nginx:
+    image: nginx:1.21
+    container_name: nginx
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 20M
+    depends_on:
+      - artemis
+      - activemq
+      - rabbitmq
+
+  server:
+    container_name: server
+    image: node-filas
+    build:
+      context: .
+    command: npm run server
+    volumes:
+      - ./:/usr/app/
+    env_file:
+      - ./.env
+    environment:
+      - rabbit_host=rabbitmq
+      - active_host=activemq
+      - artemis_host=artemis
+    ports:
+      - 3333:3333
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 150M
+    depends_on:
+      - nginx
+
+  consumer:
+    container_name: consumer
+    image: node-filas
+    build:
+      context: .
+    command: npm run consumer
+    volumes:
+      - ./:/usr/app/
+    env_file:
+      - ./.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 150M
+    depends_on:
+      - server
+    

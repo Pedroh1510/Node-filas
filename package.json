@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "server": "tsnd --transpile-only --respawn src/server.ts",
-    "consumer": "tsnd --transpile-only --respawn src/jobs.ts"
+    "server": "ts-node-dev --transpile-only --respawn src/server.ts",
+    "consumer": "ts-node-dev --transpile-only --respawn src/jobs.ts"
   },
   "dependencies": {
     "amqplib": "^0.8.0",
+    "dotenv": "^14.3.2",
     "express": "^4.17.1",
     "rhea": "^2.0.4",
     "rhea-promise": "^2.1.0"
