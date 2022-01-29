@@ -12,10 +12,10 @@ services:
         limits:
           cpus: '0.5'
           memory: 400M
-    # environment:
-    #   - ARTEMIS_USER=user
-    #   - ARTEMIS_PASSWORD=pass
-    #   - ANONYMOUS_LOGIN=true
+    environment:
+      - ARTEMIS_USER=user
+      - ARTEMIS_PASSWORD=pass
+      # - ANONYMOUS_LOGIN=true
 
   activemq:
     image: local/activemq
@@ -31,9 +31,9 @@ services:
         limits:
           cpus: '0.5'
           memory: 400M
-    # environment:
-    #   - ACTIVEMQ_ADMIN_LOGIN=user
-    #   - ACTIVEMQ_ADMIN_PASSWORD=pass
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=user
+      - ACTIVEMQ_ADMIN_PASSWORD=pass
     #   - ANONYMOUS_LOGIN=true
 
   rabbitmq:

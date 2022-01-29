@@ -1,4 +1,3 @@
-import { exampleWorker } from '@/utils';
 import amqpP, { Options } from 'amqplib';
 
 const config: Options.Connect = {

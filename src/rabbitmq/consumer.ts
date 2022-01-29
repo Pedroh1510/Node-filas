@@ -1,11 +1,13 @@
 import { consumerProps } from '@/utils';
 import amqp, { Options } from 'amqplib/callback_api';
 
+import { config as configEnv } from './config/env';
+
 const config: Options.Connect = {
-	hostname: 'localhost',
-	username: 'guest',
-	password: 'guest',
-	port: 5674
+	hostname: configEnv.host,
+	username: configEnv.user,
+	password: configEnv.pass,
+	port: configEnv.port
 };
 
 export function consumer(props: consumerProps) {

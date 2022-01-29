@@ -2,8 +2,8 @@ import rhea from 'rhea';
 
 const connection = rhea.connect({
 	host: 'localhost',
-	username: 'user',
-	password: 'pass',
+	username: 'artemis',
+	password: 'artemis',
 	port: 5672,
 	container_id: 'prod'
 });

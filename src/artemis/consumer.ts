@@ -1,12 +1,14 @@
 import { consumerProps } from '@/utils';
 import rhea from 'rhea';
 
+import { config } from './config/env';
+
 export function consumer(props: consumerProps) {
 	const connection = rhea.connect({
-		host: 'localhost',
-		username: 'user',
-		password: 'pass',
-		port: 5672,
+		host: config.host,
+		username: config.user,
+		password: config.pass,
+		port: config.port,
 		receiver_options: { credit_window: 0, autoaccept: false },
 		reconnect: true,
 		idle_time_out: 5000
