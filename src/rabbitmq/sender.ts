@@ -10,6 +10,7 @@ const config: Options.Connect = {
 };
 
 const connection = amqpP.connect(config);
+
 export async function sendMessage(queue, msg) {
 	return connection
 		.then((conn) => conn.createChannel())

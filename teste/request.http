@@ -1,5 +1,5 @@
 GET http://localhost:3333/activemq
 ###
-GET http://localhost:3333/artemis
+GET http://localhost:3333/artemis/
 ###
 GET http://localhost:3333/rabbit
