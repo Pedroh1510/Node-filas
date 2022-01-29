@@ -1,6 +1,6 @@
 interface envDTO {
 	host: string;
-	port: string;
+	port: number;
 	user: string;
 	pass: string;
 }

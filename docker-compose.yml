@@ -64,9 +64,19 @@ services:
           cpus: '0.1'
           memory: 20M
     depends_on:
-      - artemis
-      - activemq
-      - rabbitmq
+      - server
+
+  redis:
+    container_name: redis
+    image: redis:6-alpine
+    command: redis-server --requirepass Redis2022!
+    ports:
+      - 6379:6379
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 100M
 
   server:
     container_name: server
@@ -90,7 +100,10 @@ services:
           cpus: '0.5'
           memory: 150M
     depends_on:
-      - nginx
+      - redis
+      - artemis
+      - activemq
+      - rabbitmq
 
   consumer:
     container_name: consumer
