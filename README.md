@@ -44,4 +44,5 @@ yarn consumer
   npx autocannon -c 100 -d 10 localhost:3333/activemq --renderStatusCodes
   npx autocannon -c 100 -d 10 localhost:3333/artemis --renderStatusCodes
   npx autocannon -c 100 -d 10 localhost:3333/redis --renderStatusCodes
+  npx autocannon -c 100 -d 10 localhost:3333/kafka --renderStatusCodes
 ```

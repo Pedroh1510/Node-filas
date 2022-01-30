@@ -4,6 +4,7 @@ import express from 'express';
 
 import { sendMessagePromise as activemq } from './activemq/sender';
 import { sendMessagePromise as artemis } from './artemis/sender';
+import { sendMessage as kafka } from './kafka/sender';
 import { sendMessage as rabbitmq } from './rabbitmq/sender';
 import { sendMessage as redis, serverControllerRedis } from './redis/sender';
 
@@ -57,5 +58,14 @@ app.get('/redis', async (req, res) => {
 });
 
 app.use('/admin/queues', serverControllerRedis.getRouter());
+
+app.get('/kafka', async (req, res) => {
+	try {
+		if (await kafka('node-filas', 'kafka')) {
+			return res.send('ok');
+		}
+	} catch (error) {}
+	return res.sendStatus(400);
+});
 
 app.listen(3333, () => console.log('Running'));

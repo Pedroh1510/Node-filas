@@ -6,7 +6,6 @@ services:
     ports:
       - 61616:61616
       - 5672:5672
-      - 8161:8161
     deploy:
       resources:
         limits:
@@ -25,7 +24,6 @@ services:
     ports:
       - 61617:61616
       - 5673:5672
-      - 8080:8161
     deploy:
       resources:
         limits:
@@ -40,7 +38,6 @@ services:
     image: rabbitmq:3.9.13-management-alpine
     container_name: rabbitmq
     ports:
-      - 15672:15672
       - 5674:5672
     environment:
       - RABBITMQ_DEFAULT_USER=guest
@@ -65,6 +62,7 @@ services:
           memory: 20M
     depends_on:
       - server
+      - kafka-ui
 
   redis:
     container_name: redis
@@ -104,6 +102,7 @@ services:
       - artemis
       - activemq
       - rabbitmq
+      - kafka
 
   consumer:
     container_name: consumer
@@ -123,3 +122,57 @@ services:
     depends_on:
       - server
     
+  zookeeper:
+    container_name: zookeeper
+    image: bitnami/zookeeper:3
+    ports:
+      - 2181:2181
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 250M
+
+  kafka:
+    container_name: kafka
+    image: bitnami/kafka:2.5.0
+    ports:
+      - 9092:9092
+      - 9093:9093
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true      
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+    depends_on:
+      - zookeeper
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 350M
