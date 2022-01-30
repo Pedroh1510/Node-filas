@@ -1,6 +1,6 @@
 # NodeJS + filas
 
-Este projeto tem como objetivo servir de exemplo sobre como fazer uma conexão simples de envio e consumo de mensagens em sistemas de mensageria com NodeJs.
+Este projeto tem como objetivo servir de exemplo sobre como fazer uma conexão simples de envio e consumo de mensagens em sistemas de mensageiria com NodeJs.
 
 ## Tecnologias
 
@@ -8,6 +8,8 @@ Este projeto tem como objetivo servir de exemplo sobre como fazer uma conexão s
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [ActiveMQ 'Classic'](https://activemq.apache.org/components/classic/)
 - [ActiveMQ Artemis](https://activemq.apache.org/components/artemis/)
+- [Redis](https://redis.io/) + [Bull](https://github.com/OptimalBits/bull)
+- [Kafka](https://kafka.apache.org/)
 
 ## Como utilizar
 
@@ -19,22 +21,10 @@ cd docker
 ./createDockerImagesExternal.sh
 ```
 
-Criando os containers do RabbitMq, ActiveMq Classic e Artemis
+Criando os containers
 
 ```sh
 docker--compose up -d
-```
-
-Executando o projeto
-
-```sh
-yarn install
-
-# Servidor
-yarn server
-
-# consumidor
-yarn consumer
 ```
 
 ## Testes de benchmark
