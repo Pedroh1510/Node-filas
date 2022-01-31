@@ -10,6 +10,7 @@ Este projeto tem como objetivo servir de exemplo sobre como fazer uma conexão s
 - [ActiveMQ Artemis](https://activemq.apache.org/components/artemis/)
 - [Redis](https://redis.io/) + [Bull](https://github.com/OptimalBits/bull)
 - [Kafka](https://kafka.apache.org/)
+- [Nginx](https://www.nginx.com/)
 
 ## Como utilizar
 
@@ -24,8 +25,18 @@ cd docker
 Criando os containers
 
 ```sh
-docker--compose up -d
+docker-compose up -d
 ```
+
+## Acessando UI de cada fila
+
+Uso do Nginx como proxy reverso
+
+- [RabbitMQ](http://rabbitmq.localhost/)
+- [ActiveMQ 'Classic'](http://active.localhost/)
+- [ActiveMQ Artemis](http://artemis.localhost/)
+- [Redis+Bull](http://server.localhost/admin/queues/)
+- [Kafka](http://kafka.localhost/)
 
 ## Testes de benchmark
 
