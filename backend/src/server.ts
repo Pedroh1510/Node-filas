@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 import express from 'express';
+import cors from 'cors';
+import { PerformanceObserver, performance } from 'node:perf_hooks';
 
 import { sendMessagePromise as activemq } from './activemq/sender';
 import { sendMessagePromise as artemis } from './artemis/sender';
@@ -11,6 +13,7 @@ import { sendMessage as redis, serverControllerRedis } from './redis/sender';
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get('/teste', async (req, res) => {
 	return res.send('ok');
@@ -18,8 +21,10 @@ app.get('/teste', async (req, res) => {
 
 app.get('/artemis', async (req, res) => {
 	try {
+		const start = performance.now();
 		if (await artemis('myAddress', 'Artemis')) {
-			return res.send('ok');
+			const end = performance.now();
+			return res.send(`${parseFloat(String(end - start)).toFixed(2)} ms`);
 		}
 	} catch (error) {
 		console.log(error);
@@ -29,9 +34,13 @@ app.get('/artemis', async (req, res) => {
 
 app.get('/activemq', async (req, res) => {
 	try {
+		const start = performance.now();
 		if (await activemq('myQueue', 'Active')) {
-			return res.send('ok');
+			const end = performance.now();
+
+			return res.send(`${parseFloat(String(end - start)).toFixed(2)} ms`);
 		}
+		return res.sendStatus(204);
 	} catch (error) {
 		console.log(error);
 	}
@@ -40,18 +49,23 @@ app.get('/activemq', async (req, res) => {
 
 app.get('/rabbit', async (req, res) => {
 	try {
+		const start = performance.now();
 		if (await rabbitmq('test', 'Rabbit')) {
-			return res.send('ok');
+			const end = performance.now();
+			return res.send(`${parseFloat(String(end - start)).toFixed(2)} ms`);
 		}
+		return res.sendStatus(204);
 	} catch (error) {}
 	return res.sendStatus(400);
 });
 
 app.get('/redis', async (req, res) => {
 	try {
+		const start = performance.now();
 		const data = await redis('myQueue', 'Redis');
 		if (data) {
-			return res.send('ok');
+			const end = performance.now();
+			return res.send(`${parseFloat(String(end - start)).toFixed(2)} ms`);
 		}
 	} catch (error) {}
 	return res.sendStatus(400);
@@ -61,8 +75,10 @@ app.use('/admin/queues', serverControllerRedis.getRouter());
 
 app.get('/kafka', async (req, res) => {
 	try {
+		const start = performance.now();
 		if (await kafka('node-filas', 'kafka')) {
-			return res.send('ok');
+			const end = performance.now();
+			return res.send(`${parseFloat(String(end - start)).toFixed(2)} ms`);
 		}
 	} catch (error) {}
 	return res.sendStatus(400);

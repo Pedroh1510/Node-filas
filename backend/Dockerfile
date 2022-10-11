@@ -4,10 +4,10 @@ WORKDIR /usr/app
 
 COPY package*.json .
 
-RUN npm i
+RUN npm ci
 
 COPY . . 
 
 USER node
 
-CMD ['yarn', 'server']
+CMD ['npm', 'run', 'server']

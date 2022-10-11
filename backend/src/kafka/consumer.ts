@@ -1,4 +1,4 @@
-import { consumerProps } from './../utils';
+import { consumerProps } from '../utils';
 import { consumer as consumerConnection } from './config/connection';
 
 const createConsumer = async () => {
